@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 203.06 268.72">
+  <defs>
+    <style>
+      .cls-1 { fill: url(#linear-gradient-2); }
+      .cls-2 { font-family: TheNewElegance-CondensedRegular, 'The New Elegance'; font-size: 122.88px; }
+      .cls-3 { fill: url(#linear-gradient-3); }
+      .cls-4 { letter-spacing: -.07em; }
+      .cls-5 { letter-spacing: .49em; }
+      .cls-6 { letter-spacing: .45em; }
+      .cls-7 { font-family: FuturaPT-Book, 'Futura PT'; font-size: 87.55px; }
+      .cls-8 { letter-spacing: -.08em; }
+      .cls-9 { fill: url(#linear-gradient); }
+    </style>
+    <linearGradient id="linear-gradient" x1="-3.62" y1="108.76" x2="238.9" y2="167.8" gradientUnits="userSpaceOnUse">
+      <stop offset=".09" stop-color="#b4a0cd"/>
+      <stop offset=".6" stop-color="#6694e3"/>
+      <stop offset=".71" stop-color="#6aaee6"/>
+      <stop offset=".82" stop-color="#6dc6e9"/>
+      <stop offset=".89" stop-color="#6fcfeb"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="138.87" y1="44.14" x2="196.51" y2="73.06" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#629bee"/>
+      <stop offset="1" stop-color="#84c6f5"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-3" x1="-16.72" y1="225.73" x2="44.17" y2="139.05" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f6cbc1"/>
+      <stop offset="1" stop-color="#b8a4c7"/>
+    </linearGradient>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer 1">
+    <g>
+      <polygon class="cls-9" points="0 0 121.59 119.16 121.59 80.25 203.06 159.89 203.06 268.72 66.88 137.4 66.88 171.44 0 107.61 0 0"/>
+      <polygon class="cls-1" points="203.06 12.16 203.3 140.65 198.74 136.24 139.85 78.43 203.06 12.16"/>
+      <polygon class="cls-3" points="0 255.34 0 127.67 62.05 187.86 0 255.34"/>
+    </g>
+  </g>
+</svg>
