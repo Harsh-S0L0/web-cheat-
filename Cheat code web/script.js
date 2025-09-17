@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Cheat codes functionality
     const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRgM_UqHxgZYULQN4-96UIZHLZMECO-49QRBn0qpfD7BlE-ZE8m3e7BxeP-_fayKg8hee_5uG-led71/pub?output=csv";
     const container = document.querySelector('.cheats-container');
-    const loadMoreBtn = document.getElementById('loadMoreBtn');
+    const paginationBar = document.querySelector('.pagination-bar');
     const searchInput = document.getElementById('searchInput');
 
     const images = [
@@ -18,15 +18,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let allCheats = [];
     let filteredCheats = [];
-    let currentIndex = 0;
-    const batchSize = 10;
+    let currentPage = 1;
+    const cardsPerPage = 10;
 
     fetch(sheetURL)
         .then(response => response.text())
         .then(csv => {
             allCheats = parseCSV(csv);
             filteredCheats = [...allCheats];
+            currentPage = 1;
             displayCards();
+            renderPagination();
         })
         .catch(error => {
             console.error('Error loading cheats:', error);
@@ -87,52 +89,90 @@ document.addEventListener('DOMContentLoaded', () => {
         return card;
     }
 
-    function displayCards(reset = true) {
-        if (reset) {
-            container.innerHTML = '';
-            currentIndex = 0;
-        }
-
+    function displayCards() {
+        container.innerHTML = '';
         if (filteredCheats.length === 0) {
             container.innerHTML = '<p style="text-align: center; color: #ccc;">No cheats found.</p>';
-            loadMoreBtn.style.display = 'none';
+            paginationBar.innerHTML = '';
             return;
-        } else {
-            loadMoreBtn.style.display = 'block';
         }
-
-        const nextIndex = Math.min(currentIndex + batchSize, filteredCheats.length);
-        for (let i = currentIndex; i < nextIndex; i++) {
+        const start = (currentPage - 1) * cardsPerPage;
+        const end = Math.min(start + cardsPerPage, filteredCheats.length);
+        for (let i = start; i < end; i++) {
             const card = createCheatCard(filteredCheats[i]);
             container.appendChild(card);
         }
-        currentIndex = nextIndex;
-
-        if (currentIndex >= filteredCheats.length) {
-            loadMoreBtn.textContent = 'Load Less';
-        } else {
-            loadMoreBtn.textContent = 'Load More';
-        }
     }
 
-    loadMoreBtn.addEventListener('click', () => {
-        if (loadMoreBtn.textContent === 'Load More') {
-            displayCards(false);
-        } else {
-            container.innerHTML = '';
-            currentIndex = 0;
-            displayCards();
+    function renderPagination() {
+        paginationBar.innerHTML = '';
+        const totalPages = Math.ceil(filteredCheats.length / cardsPerPage);
+        if (totalPages <= 1) return;
+
+        // Previous button
+        const prevBtn = document.createElement('button');
+        prevBtn.className = 'pagination-btn';
+        prevBtn.textContent = 'Previous';
+        prevBtn.disabled = currentPage === 1;
+        prevBtn.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                displayCards();
+                renderPagination();
+                scrollToCheats();
+            }
+        });
+        paginationBar.appendChild(prevBtn);
+
+        // Page numbers (max 3 at a time)
+        let startPage = Math.max(1, currentPage - 1);
+        let endPage = Math.min(totalPages, startPage + 2);
+        if (endPage - startPage < 2) {
+            startPage = Math.max(1, endPage - 2);
         }
-    });
+        for (let i = startPage; i <= endPage; i++) {
+            const pageBtn = document.createElement('button');
+            pageBtn.className = 'pagination-page' + (i === currentPage ? ' active' : '');
+            pageBtn.textContent = i;
+            if (i === currentPage) pageBtn.disabled = true;
+            pageBtn.addEventListener('click', () => {
+                currentPage = i;
+                displayCards();
+                renderPagination();
+                scrollToCheats();
+            });
+            paginationBar.appendChild(pageBtn);
+        }
+
+        // Next button
+        const nextBtn = document.createElement('button');
+        nextBtn.className = 'pagination-btn';
+        nextBtn.textContent = 'Next';
+        nextBtn.disabled = currentPage === totalPages;
+        nextBtn.addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                displayCards();
+                renderPagination();
+                scrollToCheats();
+            }
+        });
+        paginationBar.appendChild(nextBtn);
+    }
+
+    function scrollToCheats() {
+        // Optional: scroll to top of cheats-container on page change (for mobile usability)
+        container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
 
     searchInput.addEventListener('input', () => {
         const query = searchInput.value.trim().toLowerCase();
         filteredCheats = allCheats.filter(cheat => 
             cheat.Reward.toLowerCase().includes(query)
         );
-        container.innerHTML = '';
-        currentIndex = 0;
+        currentPage = 1;
         displayCards();
+        renderPagination();
     });
 
     // Image loading optimization
